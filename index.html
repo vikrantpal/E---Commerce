@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dailycart | Premium Fashion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #e94560;
+            --light: #fafafa;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .nav-link:hover::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent);
+            margin-top: 4px;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .slide-in {
+            animation: slideIn 0.5s ease-out forwards;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .cart-notification {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+        #ad {background-color: rgb(170, 218, 237);}
+        
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="#" class="text-2xl font-bold text-gray-800">Dailycart</a>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="nav-link text-gray-800 hover:text-var(--accent) transition">Home</a>
+                    <a href="#shop" class="nav-link text-gray-800 hover:text-var(--accent) transition">Shop</a>
+                    <a href="#collections" class="nav-link text-gray-800 hover:text-var(--accent) transition">Collections</a>
+                    <a href="#about" class="nav-link text-gray-800 hover:text-var(--accent) transition">About</a>
+                    <a href="#contact" class="nav-link text-gray-800 hover:text-var(--accent) transition">Contact</a>
+                    
+                    <!-- Search Bar -->
+                    <div class="relative">
+                        <input type="text" placeholder="Search..." class="border border-gray-300 rounded-full py-1 px-4 focus:outline-none focus:ring-2 focus:ring-var(--accent) w-64">
+                        <button class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                            <i class="fas fa-search text-gray-500"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Cart and User Icons -->
+                    <div class="flex items-center space-x-4 ml-4">
+                        <a href="#" class="relative">
+                            <i class="fas fa-heart text-xl text-gray-800"></i>
+                        </a>
+                        <a href="#" class="relative" id="cart-icon">
+                            <i class="fas fa-shopping-bag text-xl text-gray-800"></i>
+                            <span class="cart-notification absolute -top-2 -right-2 bg-red-500 text-white rounded-full h-5 w-5 flex items-center justify-center text-xs font-bold hidden">0</span>
+                        </a>
+                        <a href="#" class="text-gray-800">
+                            <i class="fas fa-user text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-800 focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden bg-white absolute left-0 right-0 z-50 px-6 pb-4 mt-2 shadow-md">
+                <a href="#" class="block py-2 text-gray-800">Home</a>
+                <a href="#shop" class="block py-2 text-gray-800">Shop</a>
+                <a href="#collections" class="block py-2 text-gray-800">Collections</a>
+                <a href="#about" class="block py-2 text-gray-800">About</a>
+                <a href="#contact" class="block py-2 text-gray-800">Contact</a>
+                
+                <div class="relative mt-3 mb-2">
+                    <input type="text" placeholder="Search..." class="border border-gray-300 rounded-full py-1 px-4 focus:outline-none focus:ring-2 focus:ring-var(--accent) w-full">
+                    <button class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                        <i class="fas fa-search text-gray-500"></i>
+                    </button>
+                </div>
+                
+                <div class="flex justify-around mt-4">
+                    <a href="#" class="text-gray-800"><i class="fas fa-heart text-xl"></i></a>
+                    <a href="#" id="mobile-cart-icon" class="relative text-gray-800">
+                        <i class="fas fa-shopping-bag text-xl"></i>
+                        <span class="cart-notification absolute -top-2 -right-2 bg-red-500 text-white rounded-full h-5 w-5 flex items-center justify-center text-xs font-bold hidden">0</span>
+                    </a>
+                    <a href="#" class="text-gray-800"><i class="fas fa-user text-xl"></i></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="relative h-screen flex items-center justify-center bg-gray-100 overflow-hidden">
+        <div class="absolute inset-0 bg-black opacity-40"></div>
+        <img src="stylish man.jpg" alt="Stylish young woman walking confidently in a modern urban environment wearing premium fashion clothing" class="absolute inset-0 w-full h-full object-cover" />
+        
+        <div class="relative z-10 text-center px-6 container mx-auto slide-in">
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-6">Dailycart YOUR STYLE</h1>
+            <p class="text-xl md:text-2xl text-white mb-8 max-w-2xl mx-auto">Discover premium clothing designed for the modern lifestyle</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#shop" class="bg-var(--accent) hover:bg-opacity-90 text-white font-bold py-3 px-8 rounded-full transition">Shop Now</a>
+                <a href="#collections" class="bg-transparent hover:bg-white hover:bg-opacity-20 text-white font-bold py-3 px-8 border-2 border-white rounded-full transition">View Collections</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Featured Categories -->
+    <section class="py-16 bg-white" id="collections">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-10">OUR COLLECTIONS</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Category 1 -->
+                <div class="relative group overflow-hidden rounded-xl">
+                    <img src="men collection.jpg" alt="Men's fashion collection featuring tailored suits, casual wear, and accessories with modern minimalist aesthetic" class="w-full h-96 object-cover transition duration-500 group-hover:scale-105" />
+                    <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                        <a href="#" class="text-white text-xl font-bold bg-black bg-opacity-70 py-3 px-6 rounded-full hover:bg-opacity-90 transition">Men's Collection</a>
+                    </div>
+                </div>
+                
+                <!-- Category 2 -->
+                <div class="relative group overflow-hidden rounded-xl">
+                    <img src="women collection.jpg" alt="Women's fashion collection showcasing elegant dresses, contemporary workwear, and stylish casual outfits" class="w-full h-96 object-cover transition duration-500 group-hover:scale-105" />
+                    <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                        <a href="#" class="text-white text-xl font-bold bg-black bg-opacity-70 py-3 px-6 rounded-full hover:bg-opacity-90 transition">Women's Collection</a>
+                    </div>
+                </div>
+                
+                <!-- Category 3 -->
+                <div class="relative group overflow-hidden rounded-xl">
+                    <img src="accessories.jpg" alt="Unisex accessories collection including premium watches, sunglasses, belts, and luxury footwear" class="w-full h-96 object-cover transition duration-500 group-hover:scale-105" />
+                    <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                        <a href="#" class="text-white text-xl font-bold bg-black bg-opacity-70 py-3 px-6 rounded-full hover:bg-opacity-90 transition">Accessories</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Featured Products -->
+    <section class="py-16 bg-gray-100" id="shop">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-center mb-10">
+                <h2 class="text-3xl font-bold">FEATURED PRODUCTS</h2>
+                <a href="#" class="text-gray-800 hover:text-var(--accent) font-medium flex items-center">
+                    View All <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                <!-- Product 1 -->
+                <div class="product-card bg-white rounded-xl overflow-hidden shadow-lg transition duration-300">
+                    <div class="relative group">
+                        <img src="navy.webp" alt="Slim-fit " class="w-full h-80 object-cover" />
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition duration-300"></div>
+                        <button class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white text-black opacity-0 group-hover:opacity-100 py-2 px-6 rounded-full font-medium transition duration-300 hover:bg-var(--accent) hover:text-white">Quick View</button>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-semibold text-lg">Navy Peak Lapel Blazer</h3>
+                                <p class="text-gray-600">Slim Fit</p>
+                            </div>
+                            <span class="text-lg font-bold">$249.99</span>
+                        </div>
+                        <div class="mt-3 flex justify-between items-center">
+                            <div class="flex">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star-half-alt text-yellow-400"></i>
+                                <span class="ml-1 text-gray-600 text-sm">(28)</span>
+                            </div>
+                            <button class="add-to-cart bg-gray-900 hover:bg-gray-800 text-white rounded-full w-10 h-10 flex items-center justify-center">
+                                <i class="fas fa-shopping-bag"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 2 -->
+                <div class="product-card bg-white rounded-xl overflow-hidden shadow-lg transition duration-300">
+                    <div class="relative group">
+                        <img src="tshirt.webp" alt="Casual white cotton t-shirt with minimal graphic print and relaxed fit for everyday wear" class="w-full h-80 object-cover" />
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition duration-300"></div>
+                        <button class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white text-black opacity-0 group-hover:opacity-100 py-2 px-6 rounded-full font-medium transition duration-300 hover:bg-var(--accent) hover:text-white">Quick View</button>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-semibold text-lg">Essential Graphic T-Shirt</h3>
+                                <p class="text-gray-600">Look Fit</p>
+                            </div>
+                            <span class="text-lg font-bold">$39.99</span>
+                        </div>
+                        <div class="mt-3 flex justify-between items-center">
+                            <div class="flex">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="far fa-star text-yellow-400"></i>
+                                <span class="ml-1 text-gray-600 text-sm">(42)</span>
+                            </div>
+                            <button class="add-to-cart bg-gray-900 hover:bg-gray-800 text-white rounded-full w-10 h-10 flex items-center justify-center">
+                                <i class="fas fa-shopping-bag"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="product-card bg-white rounded-xl overflow-hidden shadow-lg transition duration-300">
+                    <div class="relative group">
+                        <img src="trouser.avif" alt="High-waisted black trousers with wide leg and tailored fabric for sophisticated office or evening wear" class="w-full h-80 object-cover" />
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition duration-300"></div>
+                        <button class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white text-black opacity-0 group-hover:opacity-100 py-2 px-6 rounded-full font-medium transition duration-300 hover:bg-var(--accent) hover:text-white">Quick View</button>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-semibold text-lg">Tailored Wide-Leg Trousers</h3>
+                                <p class="text-gray-600">High Waist</p>
+                            </div>
+                            <span class="text-lg font-bold">$129.99</span>
+                        </div>
+                        <div class="mt-3 flex justify-between items-center">
+                            <div class="flex">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <span class="ml-1 text-gray-600 text-sm">(15)</span>
+                            </div>
+                            <button class="add-to-cart bg-gray-900 hover:bg-gray-800 text-white rounded-full w-10 h-10 flex items-center justify-center">
+                                <i class="fas fa-shopping-bag"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 4 -->
+                <div class="product-card bg-white rounded-xl overflow-hidden shadow-lg transition duration-300">
+                    <div class="relative group">
+                        <img src="denim.avif" alt="Oversized denim jacket in medium wash with distressed details and modern streetwear aesthetic" class="w-full h-80 object-cover" />
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition duration-300"></div>
+                        <button class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white text-black opacity-0 group-hover:opacity-100 py-2 px-6 rounded-full font-medium transition duration-300 hover:bg-var(--accent) hover:text-white">Quick View</button>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-semibold text-lg">Distressed Denim Jacket</h3>
+                                <p class="text-gray-600">Oversized Fit</p>
+                            </div>
+                            <span class="text-lg font-bold">$189.99</span>
+                        </div>
+                        <div class="mt-3 flex justify-between items-center">
+                            <div class="flex">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="far fa-star text-yellow-400"></i>
+                                <span class="ml-1 text-gray-600 text-sm">(36)</span>
+                            </div>
+                            <button class="add-to-cart bg-gray-900 hover:bg-gray-800 text-white rounded-full w-10 h-10 flex items-center justify-center">
+                                <i class="fas fa-shopping-bag"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Sale Banner -->
+    <section class="py-16 bg-black-to-r from-var(--primary) to-var(--secondary) text-white">
+       
+
+        <div id="ad" class="container mx-auto px-6 text-center">
+            <h2 class="text-4xl font-bold mb-4">SUMMER SALE: UP TO 50% </h2>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">Shop our seasonal collection now and enjoy exclusive discounts for a limited time only.</p>
+            <a href="#" class="bg-white text-gray-900 font-bold py-3 px-8 rounded-full hover:bg-gray-100 transition">Shop the Sale</a>
+            
+        
+            <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+                <div>
+                    <div class="text-4xl font-bold mb-2">35%</div>
+                    <div class="text-sm uppercase">Off Denim</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold mb-2">40%</div>
+                    <div class="text-sm uppercase">Off T-Shirts</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold mb-2">30%</div>
+                    <div class="text-sm uppercase">Off Dresses</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold mb-2">50%</div>
+                    <div class="text-sm uppercase">Select Accessories</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonials -->
+    <section class="py-16 bg-white" id="about">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12">WHAT OUR CUSTOMERS SAY</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                            <img src="https://placehold.co/100x100" alt="Portrait of Sarah J., a satisfied female customer with shoulder-length brown hair and confident smile" class="w-full h-full object-cover" />
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Sarah J.</h4>
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"The quality of the pieces I've bought from Elevate is exceptional. The fabrics feel premium and the fit is perfect. I especially love their blazers - they're my go-to for meetings and events."</p>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                            <img src="https://placehold.co/100x100" alt="Portrait of Michael T., a happy male customer with short dark hair and professional appearance" class="w-full h-full object-cover" />
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Michael T.</h4>
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"As someone who cares about both style and comfort, Elevate hits the perfect balance. Their trousers are incredibly comfortable while still looking sharp at the office. Highly recommend!"</p>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                            <img src="https://placehold.co/100x100" alt="Portrait of Jennifer L., a stylish female customer with curly blonde hair and fashionable glasses" class="w-full h-full object-cover" />
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Jennifer L.</h4>
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"I've been shopping at Elevate for over a year now and I'm consistently impressed. The customer service is excellent and returns are hassle-free. Their seasonal collections always excite me!"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Newsletter -->
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-6 max-w-4xl text-center">
+            <h2 class="text-3xl font-bold mb-4">STAY CONNECTED</h2>
+            <p class="text-gray-600 mb-8">Subscribe to our newsletter for exclusive offers, styling tips, and early access to new arrivals.</p>
+            
+            <form class="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
+                <input type="email" placeholder="Your email address" class="flex-grow px-4 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-var(--accent)" />
+                <button type="submit" class="bg-gray-900 hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-full transition">Subscribe</button>
+            </form>
+            
+            <div class="mt-8 flex justify-center space-x-6">
+                <a href="#" class="text-gray-700 hover:text-var(--accent) text-xl"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-gray-700 hover:text-var(--accent) text-xl"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-gray-700 hover:text-var(--accent) text-xl"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-gray-700 hover:text-var(--accent) text-xl"><i class="fab fa-pinterest-p"></i></a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <!-- Column 1 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">ELEVATE</h3>
+                    <p class="text-gray-400 mb-4">Premium fashion for the modern lifestyle.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-pinterest-p"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Column 2 -->
+                <div>
+                    <h4 class="font-bold mb-4">SHOP</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">New Arrivals</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Best Sellers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Men's Collection</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Women's Collection</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Accessories</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Sale</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Column 3 -->
+                <div>
+                    <h4 class="font-bold mb-4">CUSTOMER SERVICE</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Contact Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">FAQs</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Shipping & Returns</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Size Guide</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Track Order</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Column 4 -->
+                <div id="contact">
+                    <h4 class="font-bold mb-4">CONTACT</h4>
+                    <address class="text-gray-400 not-italic mb-4">
+                        123 Fashion Avenue<br>
+                        New York, NY 10001<br>
+                        USA
+                    </address>
+                    <p class="text-gray-400 mb-2">
+                        <i class="fas fa-phone-alt mr-2"></i> +91 6299338163
+                    </p>
+                    <p class="text-gray-400">
+                        <i class="fas fa-envelope mr-2"></i> amanpal6700@.com
+                    </p>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 text-center text-gray-400">
+                <p>&copy; 2023 ELEVATE. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-lg overflow-y-auto transition-all duration-300 transform translate-x-full">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-bold">YOUR CART (<span id="cart-count">0</span>)</h3>
+                    <button id="close-cart" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <div id="cart-items" class="space-y-4 mb-6">
+                    <!-- Cart items will be dynamically inserted here -->
+                    <div class="text-center py-8 text-gray-500">Your cart is empty</div>
+                </div>
+                
+                <div class="border-t border-gray-200 pt-4 mb-6">
+                    <div class="flex justify-between mb-2">
+                        <span>Subtotal</span>
+                        <span id="cart-subtotal">$0.00</span>
+                    </div>
+                    <div class="flex justify-between mb-2">
+                        <span>Shipping</span>
+                        <span>Calculated at checkout</span>
+                    </div>
+                    <div class="flex justify-between font-bold text-lg">
+                        <span>Total</span>
+                        <span id="cart-total">$0.00</span>
+                    </div>
+                </div>
+                
+                <div class="space-y-3">
+                    <a href="#" class="block bg-gray-900 hover:bg-gray-800 text-white text-center py-3 px-4 rounded-full font-bold transition">Checkout</a>
+                    <a href="#" class="block bg-transparent hover:bg-gray-100 text-gray-900 text-center py-3 px-4 rounded-full font-bold border-2 border-gray-900 transition">Continue Shopping</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+        
+        // Cart Functionality
+        const cartIcon = document.getElementById('cart-icon');
+        const mobileCartIcon = document.getElementById('mobile-cart-icon');
+        const cartModal = document.getElementById('cart-modal');
+        const closeCart = document.getElementById('close-cart');
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartSubtotal = document.getElementById('cart-subtotal');
+        const cartTotal = document.getElementById('cart-total');
+        const cartCount = document.getElementById('cart-count');
+        const notificationBadges = document.querySelectorAll('.cart-notification');
+        
+        let cart = [];
+        
+        // Open/Close Cart Modal
+        cartIcon.addEventListener('click', function(e) {
+            e.preventDefault();
+            cartModal.classList.remove('hidden');
+            document.querySelector('.translate-x-full').classList.remove('translate-x-full');
+        });
+        
+        mobileCartIcon.addEventListener('click', function(e) {
+            e.preventDefault();
+            cartModal.classList.remove('hidden');
+            document.querySelector('.translate-x-full').classList.remove('translate-x-full');
+        });
+        
+        closeCart.addEventListener('click', function() {
+            document.querySelector('.translate-x-full').classList.add('translate-x-full');
+            setTimeout(() => {
+                cartModal.classList.add('hidden');
+            }, 300);
+        });
+        
+        // Add to Cart
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                // Get product details - in a real app, these would come from a database
+                const productCard = this.closest('.product-card');
+                const productName = productCard.querySelector('h3').textContent;
+                const productPrice = parseFloat(productCard.querySelector('span:nth-child(2)').textContent.replace('$', ''));
+                const productImage = productCard.querySelector('img').src;
+                
+                // Check if product already in cart
+                const existingItem = cart.find(item => item.name === productName);
+                
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({
+                        name: productName,
+                        price: productPrice,
+                        image: productImage,
+                        quantity: 1
+                    });
+                }
+                
+                updateCart();
+                showAddToCartNotification();
+            });
+        });
+        
+        function updateCart() {
+            // Update cart UI
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<div class="text-center py-8 text-gray-500">Your cart is empty</div>';
+            } else {
+                let html = '';
+                let subtotal = 0;
+                
+                cart.forEach(item => {
+                    subtotal += item.price * item.quantity;
+                    
+                    html += `
+                        <div class="flex items-center space-x-4">
+                            <div class="w-20 h-20 rounded overflow-hidden">
+                                <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover" />
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="font-medium">${item.name}</h4>
+                                <div class="flex items-center mt-1 space-x-4">
+                                    <div class="flex items-center border border-gray-200 rounded">
+                                        <button class="px-2 py-1 text-gray-500 hover:bg-gray-100 decrease-quantity" data-name="${item.name}">-</button>
+                                        <span class="px-2">${item.quantity}</span>
+                                        <button class="px-2 py-1 text-gray-500 hover:bg-gray-100 increase-quantity" data-name="${item.name}">+</button>
+                                    </div>
+                                    <span class="font-medium">$${(item.price * item.quantity).toFixed(2)}</span>
+                                </div>
+                            </div>
+                            <button class="text-gray-400 hover:text-var(--accent) remove-item" data-name="${item.name}">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+                
+                cartItemsContainer.innerHTML = html;
+                
+                // Add event listeners for quantity and remove buttons
+                document.querySelectorAll('.increase-quantity').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const productName = this.getAttribute('data-name');
+                        const item = cart.find(item => item.name === productName);
+                        item.quantity += 1;
+                        updateCart();
+                    });
+                });
+                
+                document.querySelectorAll('.decrease-quantity').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const productName = this.getAttribute('data-name');
+                        const item = cart.find(item => item.name === productName);
+                        
+                        if (item.quantity > 1) {
+                            item.quantity -= 1;
+                        } else {
+                            cart = cart.filter(i => i.name !== productName);
+                        }
+                        
+                        updateCart();
+                    });
+                });
+                
+                document.querySelectorAll('.remove-item').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const productName = this.getAttribute('data-name');
+                        cart = cart.filter(i => i.name !== productName);
+                        updateCart();
+                    });
+                });
+            }
+            
+            // Update totals
+            const subtotalValue = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            cartSubtotal.textContent = `$${subtotalValue.toFixed(2)}`;
+            cartTotal.textContent = `$${subtotalValue.toFixed(2)}`;
+            
+            // Update cart count
+            const itemCount = cart.reduce((total, item) => total + item.quantity, 0);
+            cartCount.textContent = itemCount;
+            notificationBadges.forEach(badge => {
+                if (itemCount > 0) {
+                    badge.textContent = itemCount;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            });
+        }
+        
+        function showAddToCartNotification() {
+            const notification = document.createElement('div');
+            notification.className = 'fixed bottom-6 right-6 bg-gray-900 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2 animate-fade-in-up';
+            notification.innerHTML = `
+                <i class="fas fa-check-circle text-green-400"></i>
+                <span>Item added to cart</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('animate-fade-out-up');
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+        
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+```
+
